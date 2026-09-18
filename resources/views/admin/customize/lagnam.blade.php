@@ -1,0 +1,131 @@
+@extends('admin.layouts.layout')
+@section('title',  'Admin - Lagnam')
+
+@section('content')
+    <div id="layout-wrapper">
+        @include('admin.includes.header')
+        @include('admin.includes.sidebar')
+        <div class="main-content">
+            <div class="page-content background_color">
+                <div class="container-fluid">
+
+                    <div class="row">
+                        <!-- Create Lagnam Form -->
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3">Add Lagnam</h5>
+
+                                    <form method="post" action="{{ route('lagnam.store') }}">
+                                        @csrf
+                                        <div class="mb-3">
+                                            <label class="form-label" for="lagnam-input">Name</label>
+                                            <input type="text" class="form-control" name="name" id="lagnam-input" placeholder="Enter Lagnam...">
+                                        </div>
+
+                                        <div class="text-end">
+                                            <button class="btn btn-primary" type="submit">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Create Lagnam Form -->
+
+                        <!-- lagnam Table -->
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title mb-3">Lagnam</h4>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered rounded mb-0">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Lagnam</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($lagnams as $index => $lagnam)
+                                                <tr>
+                                                    <th scope="row">{{ method_exists($lagnams, 'firstItem') ? $lagnams->firstItem() + $index : $index + 1 }}</th>
+                                                    <td>{{ $lagnam->name }}</td>
+                                                    <td>
+                                                        <!-- Edit Button -->
+                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal-{{ $lagnam->id }}">Edit</button>
+                                                        <!-- Delete Button -->
+                                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $lagnam->id }}">Delete</button>
+                                                    </td>
+                                                </tr>
+
+                                                <!-- Edit Modal -->
+                                                <div class="modal fade" id="editModal-{{ $lagnam->id }}" tabindex="-1" aria-labelledby="editModalLabel-{{ $lagnam->id }}" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="editModalLabel-{{ $lagnam->id }}">Edit Lagnam</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <form method="POST" action="{{ route('lagnam.update', $lagnam->id) }}">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <div class="modal-body">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label" for="edit-lagnam">Name</label>
+                                                                        <input type="text" class="form-control" id="edit-lagnam" name="name" value="{{ $lagnam->name }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- End Edit Modal -->
+
+                                                <!-- Delete Modal -->
+                                                <div class="modal fade" id="deleteModal-{{ $lagnam->id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $lagnam->id }}" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="deleteModalLabel-{{ $lagnam->id }}">Delete Lagnam</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Are you sure you want to delete the Lagnam "{{ $lagnam->name }}"?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <form action="{{ route('lagnam.destroy', $lagnam->id) }}" method="POST" style="display: inline;">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- End Delete Modal -->
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- Pagination Links -->
+                                    <div class="d-flex justify-content-end mt-2">
+                                        {{ $lagnams->links('vendor.pagination.bootstrap-5') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End laknam Table -->
+                    </div> <!-- row -->
+
+                </div> <!-- container-fluid -->
+            </div> <!-- page-content -->
+        </div> <!-- main-content -->
+        @include('admin.includes.footer')
+    </div> <!-- layout-wrapper -->
+@endsection

@@ -1,0 +1,24 @@
+/* Custom Select2 Styles */
+.search-form .select2-container--default .select2-selection--single {
+    border-radius: 6px;
+    border: 1px solid #e2e5e8;
+    padding: 8px 12px;
+    height: auto;
+    transition: all 0.3s ease;
+    height: 38px;
+    display: flex;
+    align-items: center;
+}
+
+.search-form .select2-container--default.select2-container--focus .select2-selection--single {
+    border-color: #6c757d;
+    box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.25);
+}
+
+.search-form .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 38px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+    padding-left: 20px;
+}
