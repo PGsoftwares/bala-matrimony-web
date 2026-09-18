@@ -232,6 +232,7 @@ class AdminController extends Controller
         $user->password = Hash::make($validatedData['password']);
         $user->otp_verified_at = Carbon::now();
         $user->email_verified_at = Carbon::now();
+        $user->status = 'pending';
         $user->register_step = 0;
         $user->save();
 

@@ -50,6 +50,7 @@ class AdminInfoController extends Controller
                 'password' => Hash::make($request->input('password')),
                 'otp_verified_at' => Carbon::now(),
                 'email_verified_at' => Carbon::now(),
+                'status' => 'active',
                 'created_at' => Carbon::now(),
             ];
 

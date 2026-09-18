@@ -29,6 +29,10 @@ class User extends Authenticatable
         'membership',
         'status',
         'photo',
+        'register_step',
+        'device_token',
+        'email_otp',
+        'email_expires_at',
     ];
 
     /**

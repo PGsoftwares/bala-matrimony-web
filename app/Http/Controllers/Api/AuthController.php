@@ -130,6 +130,7 @@ class AuthController extends Controller
             'device_token'   => $request->input('device_token'),
             'email_otp'      => $otp,
             'email_expires_at' => now()->addMinutes($expiryMinutes),
+            'status'         => 'pending',
             'register_step'  => 0,
         ]);
 

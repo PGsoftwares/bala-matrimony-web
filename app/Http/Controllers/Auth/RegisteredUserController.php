@@ -65,6 +65,8 @@ class RegisteredUserController extends Controller
                 'mobile' => $request->mobile,
                 'country_code' => $request->country_code,
                 'password' => Hash::make($request->password),
+                'status' => 'pending',
+                'register_step' => 0,
             ]);
 
             event(new Registered($user));
