@@ -77,7 +77,7 @@ class PhonePeController extends Controller
                     'viewed_interests' => 0,
                     'balance_interests' => $noOfInterest,
                     'recharge_date' => now(),
-                    'expiry_date' => now()->addMonths((int) $month),
+                    'expiry_date' => ((int) $month > 0) ? now()->addMonths((int) $month) : null,
                     'status' => 'pending',
                     'updated_at' => now()
                 ]);
@@ -98,7 +98,7 @@ class PhonePeController extends Controller
                 'viewed_interests' => 0,
                 'balance_interests' => $noOfInterest,
                 'recharge_date' => now(),
-                'expiry_date' => now()->addMonths((int) $month),
+                'expiry_date' => ((int) $month > 0) ? now()->addMonths((int) $month) : null,
                 'status' => 'pending',
                 'created_at' => now(),
             ]);
@@ -217,7 +217,7 @@ class PhonePeController extends Controller
             'month' => 'required|integer',
             'no_of_contact' => 'required|integer',
             'recharge_date' => 'required|date',
-            'expiry_date' => 'required|date',
+            'expiry_date' => 'nullable|date',
             'balance' => 'required|integer',
             'no_of_viewed' => 'required|integer',
             'status' => 'required|string',
@@ -259,7 +259,7 @@ class PhonePeController extends Controller
             'viewed_interests'  => $validatedData['viewed_interests'],
             'balance_interests' => $validatedData['balance_interests'],
             'recharge_date'     => $validatedData['recharge_date'],
-            'expiry_date'       => $validatedData['expiry_date'],
+            'expiry_date'       => (!empty($validatedData['expiry_date']) && ((int)($validatedData['month'] ?? 0) > 0)) ? $validatedData['expiry_date'] : null,
             'status'            => 'paid',
             'updated_at'        => now(),
         ];

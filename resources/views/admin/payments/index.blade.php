@@ -238,7 +238,7 @@
                                             </td>
                                             <td>
                                                 <small class="text-muted">
-                                                    {{ !empty($receipt->expiry_date) ? \Carbon\Carbon::parse($receipt->expiry_date)->format('d-M-Y') : 'Without Expiry Date' }}
+                                                    {{ (!empty($receipt->expiry_date) && !empty($receipt->month) && (int)$receipt->month > 0) ? \Carbon\Carbon::parse($receipt->expiry_date)->format('d-M-Y') : 'Without Expiry Date' }}
                                                 </small>
                                             </td>
                                             <td>
@@ -390,7 +390,7 @@
                                     <p class="mb-1 text-muted font-size-12"><strong>Recharged Date:</strong> ${r.recharge_date || 'N/A'}</p>
                                 </div>
                                 <div class="col-md-6 text-md-end">
-                                    <p class="mb-1 text-muted font-size-12"><strong>Valid Till:</strong> ${r.expiry_date || 'N/A'}</p>
+                                    <p class="mb-1 text-muted font-size-12"><strong>Valid Till:</strong> ${(!r.month || parseInt(r.month) === 0 || !r.expiry_date) ? 'Without Expiry Date' : r.expiry_date}</p>
                                 </div>
                             </div>
                         `;

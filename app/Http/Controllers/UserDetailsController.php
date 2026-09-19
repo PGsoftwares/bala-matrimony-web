@@ -316,7 +316,7 @@ class  UserDetailsController extends Controller
                             'updated_at' => $now
                         ]);
 
-                        $months = max(1, (int) $package->month);
+                        $months = (int) ($package->month ?? 0);
                         DB::table('receipts')->insert([
                             'user_id' => $id,
                             'package' => $package->name,
