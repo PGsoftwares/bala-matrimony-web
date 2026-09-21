@@ -63,7 +63,9 @@
                                     <th>Occupation</th>
                                     <th>Employed In</th>
                                     <th>Monthly Income</th>
+                                    <th>Father Name</th>
                                     <th>Father Status</th>
+                                    <th>Mother Name</th>
                                     <th>Mother Status</th>
                                     <th>Family Type</th>
                                     <th>Family Status</th>
@@ -76,16 +78,16 @@
                                     <th>Younger Sister</th>
                                     <th>Elder Married Sister</th>
                                     <th>Younger Married Sister</th>
-                                    <th>Property Details</th>
-                                    <th>Rashi</th>
-                                    <th>Gothram</th>
-                                    <th>Dosha</th>
-                                    <th>Country</th>
-                                    <th>State</th>
-                                    <th>City</th>
-                                    <th>Registration Date</th>
-                                </tr>
-                                </thead>
+                                     <th>Property Details</th>
+                                     <th>Rashi</th>
+                                     <th>Gothram</th>
+                                     <th>Dosha</th>
+                                     <th>Country</th>
+                                     <th>State</th>
+                                     <th>City</th>
+                                     <th>Registration Date</th>
+                                 </tr>
+                                 </thead>
                                 <tbody>
                                 @forelse($users as $user)
                                     <tr>
@@ -113,7 +115,9 @@
                                         <td>{{ $user->occupation }}</td>
                                         <td>{{ $user->employed_in }}</td>
                                         <td>{{ $user->monthly_income }}</td>
+                                        <td>{{ $user->father_name }}</td>
                                         <td>{{ $user->father_profession }}</td>
+                                        <td>{{ $user->mother_name }}</td>
                                         <td>{{ $user->mother_profession }}</td>
                                         <td>{{ $user->family_type }}</td>
                                         <td>{{ $user->family_status }}</td>

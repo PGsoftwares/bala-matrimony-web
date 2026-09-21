@@ -38,22 +38,40 @@
                                 <div class="row g-3">
 
                                     <div class="col-md-6">
+                                        <label for="father_name" class="form-label">Father Name <span class="text-danger">*</span></label>
+                                        <input type="text" id="father_name" name="father_name" class="form-control rounded-pill shadow-none @error('father_name') is-invalid @enderror" placeholder="Enter Father Name" value="{{ old('father_name', $userAndUserDetails->father_name ?? '') }}" required>
+                                        @error('father_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    </div>
+
+                                    <div class="col-md-6">
                                         <label for="father_profession" class="form-label">Father Status</label>
                                         <select id="father_profession" name="father_profession" class="form-select rounded-pill shadow-none">
                                             <option value="">Select Father Status</option>
-                                            <option value="Employed" {{ old('father_profession') == 'Employed' ? 'selected' : '' }}>Employed</option>
-                                            <option value="Not Working" {{ old('father_profession') == 'Not Working' ? 'selected' : '' }}>Not Working</option>
-                                            <option value="Passed Away" {{ old('father_profession') == 'Passed Away' ? 'selected' : '' }}>Passed Away</option>
+                                            <option value="Employed" {{ old('father_profession', $userAndUserDetails->father_profession ?? '') == 'Employed' ? 'selected' : '' }}>Employed</option>
+                                            <option value="Not Working" {{ old('father_profession', $userAndUserDetails->father_profession ?? '') == 'Not Working' ? 'selected' : '' }}>Not Working</option>
+                                            <option value="Passed Away" {{ old('father_profession', $userAndUserDetails->father_profession ?? '') == 'Passed Away' ? 'selected' : '' }}>Passed Away</option>
+                                            @if(!empty($userAndUserDetails->father_profession) && !in_array(strtolower(trim($userAndUserDetails->father_profession)), ['employed', 'not working', 'passed away', 'passedaway']))
+                                                <option value="{{ $userAndUserDetails->father_profession }}" selected>{{ $userAndUserDetails->father_profession }}</option>
+                                            @endif
                                         </select>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="mother_name" class="form-label">Mother Name <span class="text-danger">*</span></label>
+                                        <input type="text" id="mother_name" name="mother_name" class="form-control rounded-pill shadow-none @error('mother_name') is-invalid @enderror" placeholder="Enter Mother Name" value="{{ old('mother_name', $userAndUserDetails->mother_name ?? '') }}" required>
+                                        @error('mother_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                     </div>
 
                                     <div class="col-md-6">
                                         <label for="mother_profession" class="form-label">Mother Status</label>
                                         <select id="mother_profession" name="mother_profession" class="form-select rounded-pill shadow-none">
                                             <option value="">Select Mother Status</option>
-                                            <option value="Employed" {{ old('mother_profession') == 'Employed' ? 'selected' : '' }}>Employed</option>
-                                            <option value="Not Working" {{ old('mother_profession') == 'Not Working' ? 'selected' : '' }}>Not Working</option>
-                                            <option value="Passed Away" {{ old('mother_profession') == 'Passed Away' ? 'selected' : '' }}>Passed Away</option>
+                                            <option value="Employed" {{ old('mother_profession', $userAndUserDetails->mother_profession ?? '') == 'Employed' ? 'selected' : '' }}>Employed</option>
+                                            <option value="Not Working" {{ old('mother_profession', $userAndUserDetails->mother_profession ?? '') == 'Not Working' ? 'selected' : '' }}>Not Working</option>
+                                            <option value="Passed Away" {{ old('mother_profession', $userAndUserDetails->mother_profession ?? '') == 'Passed Away' ? 'selected' : '' }}>Passed Away</option>
+                                            @if(!empty($userAndUserDetails->mother_profession) && !in_array(strtolower(trim($userAndUserDetails->mother_profession)), ['employed', 'not working', 'passed away', 'passedaway']))
+                                                <option value="{{ $userAndUserDetails->mother_profession }}" selected>{{ $userAndUserDetails->mother_profession }}</option>
+                                            @endif
                                         </select>
                                     </div>
 

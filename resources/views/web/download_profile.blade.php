@@ -126,10 +126,10 @@
                 <tr><td class="info-label">Nakshatra</td><td>: {{ $userDetail->nakshatra }}</td></tr>
                 <tr><td class="info-label">Gothram</td><td>: {{ $userDetail->gothram ?? '-' }}</td></tr>
                 <tr><td class="info-label">Dosham</td><td>: {{ $userDetail->dosham }}</td></tr>
-                <tr><td class="info-label">Father</td><td>: {{ $userDetail->father_profession }}</td></tr>
+                <tr><td class="info-label">Father</td><td>: {{ !empty($userDetail->father_name) ? $userDetail->father_name . (!empty($userDetail->father_profession) ? ' (' . $userDetail->father_profession . ')' : '') : ($userDetail->father_profession ?? '-') }}</td></tr>
                 <tr>
                     <td class="info-label">Mother</td>
-                    <td>: {{ $userDetail->mother_profession }}</td>
+                    <td>: {{ !empty($userDetail->mother_name) ? $userDetail->mother_name . (!empty($userDetail->mother_profession) ? ' (' . $userDetail->mother_profession . ')' : '') : ($userDetail->mother_profession ?? '-') }}</td>
                     <td rowspan="10">
                         @if($userDetail->horoscope_image)
                             <img src="{{ public_path('Horoscope Image/'.$userDetail->horoscope_image) }}" class="horoscope-image" alt="">

@@ -220,6 +220,11 @@ class  UserDetailsController extends Controller
                 return redirect()->route('user-details.show', $id)->with('success', 'Education Details Updated Successfully');
 
             case 'family':
+                $request->validate([
+                    'father_name' => 'required',
+                    'mother_name' => 'required',
+                ]);
+
                 $familyDetails = $request->only([
                     'father_name', 'father_profession', 'mother_name', 'mother_profession', 'family_type', 'family_status',
                     'family_values', 'no_of_brother', 'elder_brother', 'younger_brother',

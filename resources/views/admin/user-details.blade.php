@@ -704,6 +704,11 @@
                                             <div class="row">
 
                                                 <div class="col-lg-6 mb-3">
+                                                    <label class="form-label">Father Name <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="father_name" placeholder="Enter Father Name" value="{{ old('father_name', $userAndUserDetails->father_name ?? '') }}" required>
+                                                </div>
+
+                                                <div class="col-lg-6 mb-3">
                                                     <label class="form-label">Father Status</label>
                                                     <select class="form-select" name="father_profession">
                                                         <option value="">Select Father Status</option>
@@ -714,6 +719,11 @@
                                                             <option value="{{ $userAndUserDetails->father_profession }}" selected>{{ $userAndUserDetails->father_profession }}</option>
                                                         @endif
                                                     </select>
+                                                </div>
+
+                                                <div class="col-lg-6 mb-3">
+                                                    <label class="form-label">Mother Name <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="mother_name" placeholder="Enter Mother Name" value="{{ old('mother_name', $userAndUserDetails->mother_name ?? '') }}" required>
                                                 </div>
 
                                                 <div class="col-lg-6 mb-3">

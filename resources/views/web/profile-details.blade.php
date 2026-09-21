@@ -215,11 +215,19 @@
                         <div class="row">
                             <div class="col-md-6 border-end">
                                 <div class="row mb-2">
+                                    <div class="col-6 fw-medium">Father Name</div>
+                                    <div class="col-6">{{ $profile->father_name ?? '-' }}</div>
+                                </div>
+                                <div class="row mb-2">
                                     <div class="col-6 fw-medium">Father Status</div>
                                     <div class="col-6">{{ $profile->father_profession ?? '' }}</div>
                                 </div>
                                 <div class="row mb-2">
-                                    <div class="col-6 fw-medium">Mother Staus</div>
+                                    <div class="col-6 fw-medium">Mother Name</div>
+                                    <div class="col-6">{{ $profile->mother_name ?? '-' }}</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-6 fw-medium">Mother Status</div>
                                     <div class="col-6">{{ $profile->mother_profession ?? '' }}</div>
                                 </div>
                                 <div class="row mb-2">
