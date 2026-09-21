@@ -4,9 +4,9 @@ class ImageCropper {
         this.previewId = options.previewId;
         this.croppedInputId = options.croppedInputId;
         this.cropButtonId = options.cropButtonId;
-        this.aspectRatio = options.aspectRatio || 1;
-        this.width = options.width || 300;
-        this.height = options.height || 300;
+        this.aspectRatio = (typeof options.aspectRatio === 'number' && !isNaN(options.aspectRatio)) ? options.aspectRatio : NaN;
+        this.width = options.width || null;
+        this.height = options.height || null;
         this.cropper = null;
 
         this.init();
@@ -46,16 +46,24 @@ class ImageCropper {
                 }
 
                 // Initialize cropper
-                this.cropper = new Cropper(previewImage, {
+                const cropperOptions = {
                     aspectRatio: this.aspectRatio,
                     viewMode: 1,
-                    ready: () => {
+                    autoCropArea: 0.9,
+                    responsive: true,
+                    restore: false
+                };
+
+                if (this.width && this.height) {
+                    cropperOptions.ready = () => {
                         this.cropper.setCropBoxData({
                             width: this.width,
                             height: this.height
                         });
-                    }
-                });
+                    };
+                }
+
+                this.cropper = new Cropper(previewImage, cropperOptions);
 
                 // Show the crop button
                 document.getElementById(this.cropButtonId).style.display = 'block';
@@ -66,10 +74,13 @@ class ImageCropper {
 
     handleCrop() {
         if (this.cropper) {
-            const croppedCanvas = this.cropper.getCroppedCanvas({
-                width: this.width,
-                height: this.height
-            });
+            const canvasOptions = {};
+            if (this.width && this.height) {
+                canvasOptions.width = this.width;
+                canvasOptions.height = this.height;
+            }
+
+            const croppedCanvas = this.cropper.getCroppedCanvas(canvasOptions);
 
             // Update preview with cropped image
             const previewImage = document.getElementById(this.previewId);

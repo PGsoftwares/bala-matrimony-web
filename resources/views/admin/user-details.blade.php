@@ -1190,9 +1190,7 @@
                 previewId: 'horoscopePreviewImage',
                 croppedInputId: 'horoscopeCroppedImageInput',
                 cropButtonId: 'horoscopeCropButton',
-                width: 300,
-                height: 300,
-                aspectRatio: 1
+                aspectRatio: NaN
             });
 
         });
