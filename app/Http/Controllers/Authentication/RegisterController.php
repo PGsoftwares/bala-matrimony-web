@@ -67,8 +67,6 @@ class RegisterController extends Controller
             'employed_in' => 'required',
             'occupation' => 'required',
             'monthly_income' => 'required',
-            'father_name' => 'required',
-            'mother_name' => 'required',
             'rashi' => 'required',
             'nakshatra' => 'required',
             'dosham' => 'required',

@@ -38,9 +38,8 @@
                                 <div class="row g-3">
 
                                     <div class="col-md-6">
-                                        <label for="father_name" class="form-label">Father Name <span class="text-danger">*</span></label>
-                                        <input type="text" id="father_name" name="father_name" class="form-control rounded-pill shadow-none @error('father_name') is-invalid @enderror" placeholder="Enter Father Name" value="{{ old('father_name', $userAndUserDetails->father_name ?? '') }}" required>
-                                        @error('father_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                        <label for="father_name" class="form-label">Father Name</label>
+                                        <input type="text" id="father_name" name="father_name" class="form-control rounded-pill shadow-none" placeholder="Enter Father Name" value="{{ old('father_name', $userAndUserDetails->father_name ?? '') }}">
                                     </div>
 
                                     <div class="col-md-6">
@@ -57,9 +56,8 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label for="mother_name" class="form-label">Mother Name <span class="text-danger">*</span></label>
-                                        <input type="text" id="mother_name" name="mother_name" class="form-control rounded-pill shadow-none @error('mother_name') is-invalid @enderror" placeholder="Enter Mother Name" value="{{ old('mother_name', $userAndUserDetails->mother_name ?? '') }}" required>
-                                        @error('mother_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                        <label for="mother_name" class="form-label">Mother Name</label>
+                                        <input type="text" id="mother_name" name="mother_name" class="form-control rounded-pill shadow-none" placeholder="Enter Mother Name" value="{{ old('mother_name', $userAndUserDetails->mother_name ?? '') }}">
                                     </div>
 
                                     <div class="col-md-6">

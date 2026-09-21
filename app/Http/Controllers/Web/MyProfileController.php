@@ -261,11 +261,6 @@ class MyProfileController extends Controller
             'no_of_sister','elder_sister','younger_sister','elder_married_sister','younger_married_sister',
             'property_details','property_info'])) {
 
-            $request->validate([
-                'father_name' => 'required',
-                'mother_name' => 'required',
-            ]);
-
             $fields = ['father_name','father_profession','mother_name','mother_profession','family_type','family_status','family_values',
                 'no_of_brother','elder_brother','younger_brother','elder_married_brother','younger_married_brother',
                 'no_of_sister','elder_sister','younger_sister','elder_married_sister','younger_married_sister',

@@ -311,13 +311,6 @@ class WebController extends Controller
 
     public function storeRegisterStep5(Request $request): RedirectResponse
     {
-        $rules = [
-            'father_name' => 'required',
-            'mother_name' => 'required',
-        ];
-
-        $request->validate($rules);
-
         $propertyDetailsString = DataController::formatPropertyDetails($request->input('property_details'));
 
         $userId = $request->input('user_id');

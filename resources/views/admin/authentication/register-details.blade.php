@@ -407,8 +407,8 @@
                                                     <div class="row">
 
                                                         <div class="col-lg-4 mb-3">
-                                                            <label class="form-label">Father Name <span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control" name="father_name" placeholder="Enter Father Name" value="{{ old('father_name') }}" required>
+                                                            <label class="form-label">Father Name</label>
+                                                            <input type="text" class="form-control" name="father_name" placeholder="Enter Father Name" value="{{ old('father_name') }}">
                                                         </div>
 
                                                         <div class="col-lg-4 mb-3">
@@ -422,8 +422,8 @@
                                                         </div>
 
                                                         <div class="col-lg-4 mb-3">
-                                                            <label class="form-label">Mother Name <span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control" name="mother_name" placeholder="Enter Mother Name" value="{{ old('mother_name') }}" required>
+                                                            <label class="form-label">Mother Name</label>
+                                                            <input type="text" class="form-control" name="mother_name" placeholder="Enter Mother Name" value="{{ old('mother_name') }}">
                                                         </div>
 
                                                         <div class="col-lg-4 mb-3">
