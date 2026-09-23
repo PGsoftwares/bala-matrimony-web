@@ -433,14 +433,20 @@ class  UserDetailsController extends Controller
         $user = DB::table('users')->where('id', $id)->first();
 
         $userAndUserDetails = DB::table('users')
-            ->join('user_details', 'users.id', '=', 'user_details.user_id')
+            ->leftJoin('user_details', 'users.id', '=', 'user_details.user_id')
             ->leftJoin('receipts', function ($join) {
                 $join->on('users.id', '=', 'receipts.user_id')
                     ->where('receipts.id', '=', DB::raw("(SELECT MAX(id) FROM receipts WHERE user_id = users.id)"));
             })
             ->where('users.id', $id)
             ->distinct('users.id', $id)
-            ->select('users.*', 'user_details.*', 'receipts.package as package')
+            ->select(
+                'user_details.*',
+                'users.*',
+                'users.id as id',
+                'users.id as user_id',
+                'receipts.package as package'
+            )
             ->get();
 
         $preference = DB::table('set_preferences')->where('user_id', $id)->first();

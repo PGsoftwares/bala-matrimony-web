@@ -76,7 +76,7 @@
                                             <div class="col-md-6">
                                                 <h3 class="fw-bold mb-1" style="color: #094d27; font-size: 20px;">{{ $u->name }}</h3>
                                                 <p class="mb-1 text-muted font-size-13">
-                                                    <strong>Matrimony ID:</strong> BMB{{ $u->id }} &nbsp;|&nbsp; 
+                                                    <strong>Matrimony ID:</strong> BMB{{ $user->id ?? $u->user_id ?? $u->id }} &nbsp;|&nbsp; 
                                                     <strong>Profile For:</strong> {{ $u->profile_for ?? 'Self' }}
                                                 </p>
                                                 <p class="mb-0 text-muted font-size-13">
