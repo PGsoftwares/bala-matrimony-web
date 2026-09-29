@@ -351,7 +351,11 @@
                                 <div class="row mb-2">
                                     <div class="col-12 fw-medium mb-2">Horoscope Image</div>
                                     <div class="col-12">
-                                        <img class="img-thumbnail" src="{{ $profile->horoscope_image }}" alt="" style="max-width: 100%;height: 200px">
+                                        @if(!empty($profile->horoscope_image))
+                                            <img class="img-thumbnail" src="{{ $profile->horoscope_image }}" alt="" style="max-width: 100%;height: 200px">
+                                        @else
+                                            <p class="text-muted">No Horoscope Image Available</p>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

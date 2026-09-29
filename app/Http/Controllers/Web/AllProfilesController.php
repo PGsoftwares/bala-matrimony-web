@@ -100,10 +100,17 @@ class AllProfilesController extends Controller
         }
         $oppositeGender = DataController::getOppositeGender($profile->gender);
 
+        $contactRequested = DB::table('contact_requests')
+            ->where('user_id', $authUser)
+            ->where('profile_id', $profile->user_id)
+            ->exists();
+        $isOwnProfile = $authUser && ($authUser == $profile->user_id);
+        $isContactViewed = $contactRequested || $isOwnProfile;
+
         // Calculate for the profile
         $profile->age = Carbon::parse($profile->dob)->age;
         $profile->profile_image = ApiHelperController::ImageUrl($profile->profile_image, $profile->profile_picture_visibility, null, $profile->gender);
-        $profile->horoscope_image = ApiHelperController::HoroscopeImageUrl($profile->horoscope_image, $profile->profile_picture_visibility, null);
+        $profile->horoscope_image = ApiHelperController::HoroscopeImageUrl($profile->horoscope_image, $profile->horoscope_picture_visibility, null, $isContactViewed);
         $profile->name = ApiHelperController::privacyData($profile->name, $profile->name_visibility, null);
         $profile->email = ApiHelperController::privacyData($profile->email, $profile->email_visibility, null);
         $profile->mobile = ApiHelperController::privacyData($profile->mobile, $profile->mobile_number_visibility, null);

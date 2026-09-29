@@ -70,7 +70,7 @@ class ProfileController extends Controller
         }
 
         // Set image paths
-        $setImagePaths = function (&$details, $isOwnProfile, $authPackage) {
+        $setImagePaths = function (&$details, $isOwnProfile, $authPackage, $isContactViewed = true) {
             $details->age = Carbon::parse($details->dob)->age;
 
             $profileImages = [];
@@ -111,7 +111,8 @@ class ProfileController extends Controller
                 : ApiHelperController::HoroscopeImageUrl(
                     $details->horoscope_image,
                     $details->horoscope_picture_visibility,
-                    $authPackage
+                    $authPackage,
+                    $isContactViewed
                 );
         };
 
@@ -151,11 +152,19 @@ class ProfileController extends Controller
 
         $isOwnProfile = empty($profileId) || $userId == $profileId;
 
-        $setImagePaths($userAndUserDetails, $isOwnProfile, $authPackage);;
-        $mapVisibilitySettings($userAndUserDetails, $isOwnProfile, $authPackage);;
+        $viewContacts = false;
+        if (!empty($userId) && !empty($profileId) && !$isOwnProfile) {
+            $viewContacts = DB::table('contact_requests')
+                ->where('user_id', $userId)
+                ->where('profile_id', $profileId)
+                ->exists();
+        }
+
+        $setImagePaths($userAndUserDetails, $isOwnProfile, $authPackage, true);
+        $mapVisibilitySettings($userAndUserDetails, $isOwnProfile, $authPackage);
 
         if ($ProfileUserDetails) {
-            $setImagePaths($ProfileUserDetails, false, $authPackage);
+            $setImagePaths($ProfileUserDetails, false, $authPackage, $viewContacts);
             $mapVisibilitySettings($ProfileUserDetails, false, $authPackage);
         }
 

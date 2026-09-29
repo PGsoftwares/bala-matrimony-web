@@ -70,7 +70,7 @@ Route::post('send-chat', [PagesController::class, 'ChatSend']);
 Route::post('getChatRoom', [PagesController::class, 'getChatRoom']);
 
 // Profile Controller
-Route::post('getUserProfileData', [ProfileController::class, 'getUserProfileData']);
+Route::match(['get', 'post'], 'getUserProfileData', [ProfileController::class, 'getUserProfileData']);
 Route::post('addGalleryImage', [ProfileController::class, 'AddGalleryImage']);
 Route::post('updateUserProfileData', [ProfileController::class, 'updateUserProfileData']);
 Route::get('all-user-profiles', [ProfileController::class, 'allUserProfiles']);

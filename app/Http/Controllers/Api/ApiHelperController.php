@@ -360,13 +360,17 @@ class ApiHelperController extends Controller
     }
 
 
-    public static function HoroscopeImageUrl($filename, $hpv, $package): string
+    public static function HoroscopeImageUrl($filename, $hpv, $package, bool $isContactViewed = true): string
     {
         $HoroscopeImagePath = 'Horoscope Image/' . $filename;
         $fullImagePath = public_path($HoroscopeImagePath);
-        $imageUrl = asset('' .$HoroscopeImagePath);
-        $lockedImageUrl = asset('web/assets/default/default-locked.png');
+        $imageUrl = asset('' . $HoroscopeImagePath);
+        $lockedImageUrl = asset('asset/img/default/horoscope-lock.png');
         $defaultImage = asset('');
+
+        if (!$isContactViewed) {
+            return $lockedImageUrl;
+        }
 
         if (!$filename || !file_exists($fullImagePath)) {
             return $defaultImage;
