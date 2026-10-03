@@ -51,10 +51,11 @@
                             @php
                                 $img = !empty($userAndUserDetails->profile_image)
                                     ? 'public/Profile Image/' . $userAndUserDetails->profile_image
-                                    : 'public/web/assets/default/' . ($userAndUserDetails->gender === 'Male' ? 'default-male.jpg' : 'default-female.jpg');
+                                    : 'public/web/assets/default/' . ((isset($userAndUserDetails->gender) && $userAndUserDetails->gender === 'Female') ? 'default-female.jpg' : 'default-male.jpg');
+                                $headerUserName = $userAndUserDetails->name ?? auth()->user()->name ?? 'Profile';
                             @endphp
                             <img src="{{ asset($img) }}" class="avatar rounded-circle me-2 border-1" style="width: 40px; height: 40px; object-fit: cover;" alt="">
-                            <span class="d-none d-md-block">{{ $userAndUserDetails->name }}</span>
+                            <span class="d-none d-md-block">{{ $headerUserName }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow">
                             <li><a class="dropdown-item" href="{{ url('my-profile') }}">My Profile</a></li>
@@ -77,7 +78,12 @@
                         </ul>
                     </div>
                 @else
-                    <a href="{{ route('login') }}" class="btn button1 rounded-pill px-4 py-2">Login</a>
+                    <a class="btn button1 rounded-pill px-4 py-2" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('header-partial-logout-form').submit();">
+                        Logout
+                    </a>
+                    <form id="header-partial-logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
                 @endif
             @else
                 <a href="{{ route('login') }}" class="btn button1 rounded-pill px-4 py-2">Login</a>
@@ -123,8 +129,12 @@
                     </ul>
                 @else
                     <div class="mt-4">
-                        <a href="{{ route('login') }}" class="btn button1 w-100 mb-2">Login</a>
-                        <a href="{{ route('register') }}" class="btn button1 w-100">Register</a>
+                        <a class="btn button1 w-100 mb-2" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('mobile-partial-logout-form').submit();">
+                            Logout
+                        </a>
+                        <form id="mobile-partial-logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
                     </div>
                 @endif
             @else

@@ -38,7 +38,8 @@ class ApiHelperController extends Controller
             ->leftJoin('occupation_type', 'user_details.occupation_type', '=', 'occupation_type.id')
             ->leftJoin('education_level', 'user_details.qualification', '=', 'education_level.id')
             ->where('user_details.gender', $oppositeGender)
-            ->where('users.status', '!=', 'deactivated')
+            ->where('users.status', 'active')
+            ->where('users.register_step', '>=', 7)
             ->select([
                 'users.id',
                 'users.name',
@@ -421,6 +422,7 @@ class ApiHelperController extends Controller
             ->leftJoin('settings as s', 'u.id', '=', 's.user_id')
             ->where("cr.$column", $value)
             ->where('u.status', 'active')
+            ->where('u.register_step', '>=', 7)
             ->orderByDesc('cr.created_at')
             ->get([
                 'u.id',

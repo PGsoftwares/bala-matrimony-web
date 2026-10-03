@@ -83,6 +83,7 @@ class DataController extends Controller
             ->leftJoin('settings','user_details.user_id','=','settings.user_id')
             ->where('user_details.gender', $gender)
             ->where('users.status', '=', 'active')
+            ->where('users.register_step', '>=', 7)
             ->select('user_details.*', 'users.*', 'settings.profile_picture_visibility', 'settings.name_visibility');
 
         if ($prefs) {
@@ -142,6 +143,7 @@ class DataController extends Controller
             ->leftJoin('settings', 'user_details.user_id', '=', 'settings.user_id')
             ->where('user_details.gender', $gender)
             ->where('users.status', '=', 'active')
+            ->where('users.register_step', '>=', 7)
             ->orderByDesc('user_details.created_at')
             ->select('user_details.*', 'users.*', 'settings.profile_picture_visibility', 'settings.name_visibility')
             ->limit(10)
@@ -162,7 +164,8 @@ class DataController extends Controller
             })
             ->join('users', 'user_details.user_id', '=', 'users.id')
             ->leftJoin('settings', 'user_details.user_id', '=', 'settings.user_id')
-            ->where('users.status', '=', 'active');
+            ->where('users.status', '=', 'active')
+            ->where('users.register_step', '>=', 7);
 
         if ($type === 'viewed_by_me') {
             $query->where('profile_views.viewed_id', $userId);
@@ -193,7 +196,9 @@ class DataController extends Controller
                     $join->on('contact_requests.user_id', '=', 'user_details.user_id');
                 }
             })
-            ->join('users', 'user_details.user_id', '=', 'users.id');
+            ->join('users', 'user_details.user_id', '=', 'users.id')
+            ->where('users.status', '=', 'active')
+            ->where('users.register_step', '>=', 7);
 
         if ($type === 'viewed_by_me') {
             $query->where('contact_requests.user_id', $userId);

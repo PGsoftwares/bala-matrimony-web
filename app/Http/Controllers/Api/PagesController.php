@@ -297,6 +297,8 @@ class PagesController extends Controller
             ->join('users', 'user_details.user_id', '=', 'users.id')
             ->where('user_details.gender', $oppositeGender)
             ->where('user_details.education', $userEducation)
+            ->where('users.status', 'active')
+            ->where('users.register_step', '>=', 7)
             ->limit(10)
             ->get();
 
@@ -311,6 +313,8 @@ class PagesController extends Controller
             ->join('users', 'user_details.user_id', '=', 'users.id')
             ->where('user_details.gender', $oppositeGender)
             ->where('user_details.occupation', $userOccupation)
+            ->where('users.status', 'active')
+            ->where('users.register_step', '>=', 7)
             ->limit(10)
             ->get();
 
@@ -335,6 +339,7 @@ class PagesController extends Controller
             ->join('user_details', 'user_details.user_id', '=', 'users.id')
             ->leftJoin('settings', 'settings.user_id',   '=', 'users.id')
             ->where('users.status',  'active')
+            ->where('users.register_step', '>=', 7)
             ->where('user_details.gender', $oppositeGender);
 
         $highlightedProfile = (clone $highlighted)
@@ -448,6 +453,7 @@ class PagesController extends Controller
             ->leftJoin('settings',  'settings.user_id',       '=', 'user_details.user_id')
             ->where("profile_views.$columnFrom", $userId)
             ->where('users.status', 'active')
+            ->where('users.register_step', '>=', 7)
             ->select([
                 'users.id',
                 'users.name',
@@ -583,7 +589,9 @@ class PagesController extends Controller
             ->join('users', 'users.id', '=', 'highlighted_profiles.user_id')
             ->join('user_details', 'user_details.user_id', '=', 'users.id')
             ->leftJoin('settings', 'user_details.user_id', '=', 'settings.user_id')
-            ->where('user_details.gender', $oppositeGender);
+            ->where('user_details.gender', $oppositeGender)
+            ->where('users.status', 'active')
+            ->where('users.register_step', '>=', 7);
 
         $highlightedProfile = $highlightedProfiles->select(
             'users.id',
@@ -887,6 +895,7 @@ class PagesController extends Controller
                 ->leftJoin('settings', 'user_details.user_id', '=', 'settings.user_id')
                 ->where('user_details.user_id', $otherUserId)
                 ->where('users.status', 'active')
+                ->where('users.register_step', '>=', 7)
                 ->select('users.name', 'user_details.user_id', 'user_details.dob', 'user_details.gender', 'user_details.profile_image', 'settings.profile_picture_visibility',
                     'settings.name_visibility')
                 ->first();

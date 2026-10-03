@@ -40,6 +40,7 @@ class SearchController extends Controller
             ->leftJoin('settings', 'user_details.user_id', '=', 'settings.user_id')
             ->where('user_details.gender', $oppositeGender)
             ->where('users.status', '=', 'active')
+            ->where('users.register_step', '>=', 7)
             ->orderBy('user_details.created_at', 'desc')
             ->select('user_details.*', 'users.*', 'settings.profile_picture_visibility', 'settings.name_visibility');
 
@@ -122,6 +123,8 @@ class SearchController extends Controller
             ->join('users', 'user_details.user_id', '=', 'users.id')
             ->leftJoin('settings','user_details.user_id','=','settings.user_id')
             ->where('user_details.gender', $oppositeGender)
+            ->where('users.status', '=', 'active')
+            ->where('users.register_step', '>=', 7)
             ->orderBy('user_details.created_at', 'desc')
             ->select('user_details.*', 'users.*', 'settings.profile_picture_visibility');
 

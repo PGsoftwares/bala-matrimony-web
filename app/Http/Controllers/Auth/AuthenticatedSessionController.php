@@ -165,13 +165,13 @@ class AuthenticatedSessionController extends Controller
 
         /* ───────────── 2. Unfinished profile wizard ───────────── */
         return match ($step) {
-            0       => redirect()->intended(route('registerStep1')),
-            1       => redirect()->intended(route('registerStep2')),
-            2       => redirect()->intended(route('registerStep3')),
-            3       => redirect()->intended(route('registerStep4')),
-            4       => redirect()->intended(route('registerStep5')),
-            5       => redirect()->intended(route('registerStep6')),
-            6       => redirect()->intended(route('registerStep7')),
+            0       => redirect()->route('registerStep1'),
+            1       => redirect()->route('registerStep2'),
+            2       => redirect()->route('registerStep3'),
+            3       => redirect()->route('registerStep4'),
+            4       => redirect()->route('registerStep5'),
+            5       => redirect()->route('registerStep6'),
+            6       => redirect()->route('registerStep7'),
             default => redirect()->intended(route('dashboard')),
         };
     }

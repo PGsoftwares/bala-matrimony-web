@@ -36,6 +36,7 @@ class ProfileController extends Controller
                 ->leftJoin('settings', 'user_details.user_id', '=', 'settings.user_id')
                 ->where('users.id', $id)
                 ->where('users.status', 'active')
+                ->where('users.register_step', '>=', 7)
                 ->select(
                     'users.*', 'user_details.*',
                     'settings.profile_picture_visibility', 'settings.horoscope_picture_visibility', 'settings.mobile_number_visibility', 'settings.email_visibility', 'settings.name_visibility', 'settings.date_of_birth_visibility',
@@ -49,6 +50,10 @@ class ProfileController extends Controller
 
         if (!$userAndUserDetails) {
             return response()->json(['status' => false, 'message' => 'User not found']);
+        }
+
+        if ($profileId && !$ProfileUserDetails) {
+            return response()->json(['status' => false, 'message' => 'Profile not found or not active']);
         }
 
         // Assign correct package values
@@ -551,6 +556,13 @@ class ProfileController extends Controller
 
     private function updateFamilyInfo(Request $request, $userId): void
     {
+        if ($request->hasAny(['father_name', 'mother_name'])) {
+            $request->validate([
+                'father_name' => 'required|string|max:255',
+                'mother_name' => 'required|string|max:255',
+            ]);
+        }
+
         $updateData = $request->only([
             'father_name', 'father_profession', 'mother_name', 'mother_profession', 'family_type', 'family_status',
             'family_values', 'family_god', 'no_of_brother',
@@ -651,6 +663,7 @@ class ProfileController extends Controller
             ->join('users', 'user_details.user_id', '=', 'users.id')
             ->leftJoin('settings', 'user_details.user_id', '=', 'settings.user_id')
             ->where('users.status', 'active')
+            ->where('users.register_step', '>=', 7)
             ->where('user_details.gender', $oppositeGender);
 
         $totalCount = (clone $baseQuery)->count();
@@ -757,6 +770,7 @@ class ProfileController extends Controller
             ->where('user_details.gender', $oppositeGender)
             ->where('user_details.city', $preferredCities)
             ->where('users.status', 'active')
+            ->where('users.register_step', '>=', 7)
             ->orderBy('user_details.created_at', 'desc')
             ->select(
                 'users.id',
@@ -843,6 +857,7 @@ class ProfileController extends Controller
             ->where('user_details.gender', $oppositeGender)
             ->whereIn('user_details.education', $preferredEducations)
             ->where('users.status', 'active')
+            ->where('users.register_step', '>=', 7)
             ->orderBy('user_details.created_at', 'desc')
             ->select(
                 'users.id',
@@ -919,6 +934,7 @@ class ProfileController extends Controller
             ->where('user_details.gender', $oppositeGender)
             ->whereIn('user_details.occupation', $preferredOccupations)
             ->where('users.status', 'active')
+            ->where('users.register_step', '>=', 7)
             ->orderBy('user_details.created_at', 'desc')
             ->select(
                 'users.id',
@@ -985,6 +1001,8 @@ class ProfileController extends Controller
                 ->join('users', 'user_details.user_id', '=', 'users.id')
                 ->leftJoin('settings', 'user_details.user_id', '=', 'settings.user_id')
                 ->where('user_details.gender', $oppositeGender)
+                ->where('users.status', 'active')
+                ->where('users.register_step', '>=', 7)
                 ->select(
                     'users.id',
                     'users.name',
@@ -1104,7 +1122,8 @@ class ProfileController extends Controller
             ->join('user_details as ud',  'ud.user_id','=', 'u.id')
             ->leftJoin('settings as s',   's.user_id', '=', 'u.id')
             ->where('pv.viewer_id', $userId)
-            ->where('u.status', 'active');
+            ->where('u.status', 'active')
+            ->where('u.register_step', '>=', 7);
 
         $viewed = (clone $base)
             ->select([

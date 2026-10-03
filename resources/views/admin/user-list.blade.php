@@ -39,9 +39,10 @@
                                                 <label for="status-app">Status</label>
                                                 <select name="status" id="status-app" class="form-select">
                                                     <option value="">Select Status</option>
-                                                    <option value="active">Approved</option>
-                                                    <option value="deactivated">Rejected</option>
-                                                    <option value="pending">Pending</option>
+                                                    <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Approved</option>
+                                                    <option value="deactivated" {{ request('status') === 'deactivated' ? 'selected' : '' }}>Rejected</option>
+                                                    <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>Pending</option>
+                                                    <option value="incomplete" {{ request('status') === 'incomplete' ? 'selected' : '' }}>Pending / Incomplete</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -94,7 +95,9 @@
                                                                 <span class="badge badge-soft-info p-2">ID : {{$profile->user_id}}</span>
                                                             </a>
                                                             <a>
-                                                                @if($profile->status === 'active')
+                                                                @if(($profile->register_step ?? null) === null || $profile->register_step < 7)
+                                                                    <span class="badge badge-soft-warning p-2">Pending / Incomplete</span>
+                                                                @elseif($profile->status === 'active')
                                                                     <span class="badge badge-soft-success p-2">Approved</span>
                                                                 @elseif($profile->status === 'deactivated')
                                                                     <span class="badge badge-soft-danger p-2">Rejected</span>
@@ -160,7 +163,7 @@
                                 <!-- Modal Footer -->
                                 <div class="modal-footer">
                                     <!-- Delete Form -->
-                                    <form method="POST" action="{{ route('user-list.destroy', $profile->user_id) }}">
+                                    <form method="POST" action="{{ route('user-list.destroy', $profile->user_id ?? $profile->id) }}">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Delete</button>

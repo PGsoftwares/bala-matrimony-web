@@ -40,8 +40,8 @@ class InterestController extends Controller
         }
 
         $receiver = DB::table('users')->where('id', $profileId)->first();
-        if (!$receiver) {
-            return response()->json(['status' => 'error', 'message' => 'Receiver not found.'], 404);
+        if (!$receiver || $receiver->status !== 'active' || ($receiver->register_step ?? 0) < 7) {
+            return response()->json(['status' => 'error', 'message' => 'Receiver not found or profile is not active.'], 404);
         }
 
         $receipt = DataController::getUserPackageDetails($userId)['receipt'];
@@ -218,6 +218,8 @@ class InterestController extends Controller
             $user = DB::table('users')
                 ->join('user_details', 'users.id', '=', 'user_details.user_id')
                 ->where('users.id', $targetUserId)
+                ->where('users.status', 'active')
+                ->where('users.register_step', '>=', 7)
                 ->select(
                     'users.id',
                     'users.name',
@@ -437,6 +439,8 @@ class InterestController extends Controller
                 'user_details.profile_image'
             )
             ->where('wishlists.user_id', $userId)
+            ->where('users.status', 'active')
+            ->where('users.register_step', '>=', 7)
             ->distinct()
             ->get();
 
@@ -514,6 +518,8 @@ class InterestController extends Controller
                 $receiver = DB::table('users')
                     ->join('user_details', 'users.id', '=', 'user_details.user_id')
                     ->where('users.id', $receiverId)
+                    ->where('users.status', 'active')
+                    ->where('users.register_step', '>=', 7)
                     ->select('users.id', 'users.name', 'user_details.gender', 'user_details.profile_image', 'user_details.dob', 'user_details.city')
                     ->first();
 
@@ -564,6 +570,8 @@ class InterestController extends Controller
                 $sender = DB::table('users')
                     ->join('user_details', 'users.id', '=', 'user_details.user_id')
                     ->where('users.id', $senderId)
+                    ->where('users.status', 'active')
+                    ->where('users.register_step', '>=', 7)
                     ->select('users.id', 'users.name', 'user_details.gender', 'user_details.profile_image', 'user_details.dob', 'user_details.city')
                     ->first();
 

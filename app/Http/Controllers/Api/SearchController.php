@@ -125,6 +125,8 @@ class SearchController extends Controller
                     ->on('receipts.created_at', '=', 'latest_receipts.latest_receipt_date');
             })
             ->where('user_details.gender', $oppositeGender)
+            ->where('users.status', 'active')
+            ->where('users.register_step', '>=', 7)
             ->orderBy('user_details.created_at', 'desc')
             ->select(
                 'users.id', 'users.name',

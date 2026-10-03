@@ -49,6 +49,8 @@ class InterestController extends Controller
             $user = DB::table('users')
                 ->join('user_details', 'users.id', '=', 'user_details.user_id')
                 ->where('users.id', $targetUserId)
+                ->where('users.status', 'active')
+                ->where('users.register_step', '>=', 7)
                 ->select('users.id', 'users.name', 'user_details.gender', 'user_details.profile_image', 'user_details.dob', 'user_details.marital_status', 'user_details.caste', 'user_details.employed_in', 'user_details.height', 'user_details.city', 'user_details.religion', 'user_details.occupation')
                 ->first();
 
@@ -156,8 +158,8 @@ class InterestController extends Controller
         }
 
         $receiver = DB::table('users')->where('id', $profileId)->first();
-        if (!$receiver) {
-            return redirect()->back()->with('error', 'Receiver not found.');
+        if (!$receiver || $receiver->status !== 'active' || ($receiver->register_step ?? 0) < 7) {
+            return redirect()->back()->with('error', 'Receiver not found or profile not active.');
         }
 
         $receipt = DB::table('receipts')

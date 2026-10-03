@@ -200,11 +200,7 @@
 
                                 </div>
 
-                                <div class="bg-white border-0 p-3 d-flex justify-content-between align-items-center shadow-top sticky-bottom">
-                                    <form action="{{ route('logout') }}" method="POST" class="m-0">
-                                        @csrf
-                                        <button type="submit" class="btn button2 rounded-pill">Logout</button>
-                                    </form>
+                                <div class="bg-white border-0 p-3 d-flex justify-content-end align-items-center shadow-top sticky-bottom">
                                     <div class="d-flex gap-2">
                                         <button type="submit" class="btn button2 rounded-pill">Save & Next</button>
                                     </div>

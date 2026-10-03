@@ -39,6 +39,7 @@ class WishlistsController extends Controller
             ->leftJoin('settings', 'settings.user_id', '=', 'user_details.user_id')
             ->where('wishlists.user_id', $userId)
             ->where('users.status', '=', 'active')
+            ->where('users.register_step', '>=', 7)
             ->orderBy('wishlists.id', 'desc')
             ->select('users.id as user_id', 'wishlists.profile_id', 'users.*', 'user_details.*', 'settings.*')
             ->get();

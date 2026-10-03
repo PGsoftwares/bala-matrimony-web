@@ -20,16 +20,18 @@ class UserProfileController extends Controller
         $db = DataSharedController::getDatabases();
 
         $query = DB::table('users')
-            ->join('user_details', 'users.id', '=', 'user_details.user_id')
+            ->leftJoin('user_details', 'users.id', '=', 'user_details.user_id')
             ->where('users.role', '!=', 'admin')
             ->select(
+                'user_details.*',
+                'users.id as id',
                 'users.id as user_id',
                 'users.name',
                 'users.email',
                 'users.mobile',
                 'users.role',
                 'users.status',
-                'user_details.*',
+                'users.register_step'
             );
 
         // Date validation
@@ -113,7 +115,21 @@ class UserProfileController extends Controller
                 ->whereRaw("TIMESTAMPDIFF(YEAR, user_details.dob, CURDATE()) <= ?", [$request->input('max_age')]);
         }
         if ($request->filled('status')) {
-            $query->where("users.status", '=', $status);
+            if ($status === 'incomplete') {
+                $query->where(function($q) {
+                    $q->whereNull('users.register_step')->orWhere('users.register_step', '<', 7);
+                });
+            } elseif ($status === 'pending') {
+                $query->where('users.status', '=', 'pending')
+                      ->where('users.register_step', '>=', 7);
+            } else {
+                $query->where("users.status", '=', $status)
+                      ->where('users.register_step', '>=', 7);
+            }
+        }
+
+        if ($request->input('completed') == '1') {
+            $query->where('users.register_step', '>=', 7);
         }
 
         // Paginate results
@@ -246,7 +262,7 @@ class UserProfileController extends Controller
     public function allUsers(Request $request): View
     {
         $query = DB::table('users')
-            ->join('user_details', 'users.id', '=', 'user_details.user_id')
+            ->leftJoin('user_details', 'users.id', '=', 'user_details.user_id')
             ->leftJoinSub(
                 DB::table('receipts')
                     ->selectRaw('user_id, MAX(package) as package, MAX(expiry_date) as expiry_date, MAX(status) as status')
@@ -259,20 +275,21 @@ class UserProfileController extends Controller
             )
             ->where('users.role', '!=', 'admin')
             ->select(
+                'user_details.*',
+                'users.id as id',
                 'users.id as user_id',
                 'users.name',
                 'users.email',
                 'users.mobile',
                 'users.role',
                 'users.status',
-                'user_details.*',
+                'users.register_step',
                 DB::raw('IF((r.expiry_date IS NULL OR r.expiry_date > NOW()) AND r.status = "paid", r.package, "closed") as package')
             );
 
         // Apply filters
         $filters = [
             'gender' => 'user_details.gender',
-            'status' => 'users.status',
             'today' => DB::raw('DATE(users.created_at)'),
             'from_date' => ['users.created_at', '>='],
             'to_date' => ['users.created_at', '<='],
@@ -280,6 +297,25 @@ class UserProfileController extends Controller
             'mobile' => 'users.mobile',
             'user_id' => 'users.id'
         ];
+
+        if ($request->filled('status')) {
+            $statusVal = $request->input('status');
+            if ($statusVal === 'incomplete') {
+                $query->where(function($q) {
+                    $q->whereNull('users.register_step')->orWhere('users.register_step', '<', 7);
+                });
+            } elseif ($statusVal === 'pending') {
+                $query->where('users.status', '=', 'pending')
+                      ->where('users.register_step', '>=', 7);
+            } else {
+                $query->where('users.status', '=', $statusVal)
+                      ->where('users.register_step', '>=', 7);
+            }
+        }
+
+        if ($request->input('completed') == '1') {
+            $query->where('users.register_step', '>=', 7);
+        }
 
         foreach ($filters as $param => $column) {
             if ($request->filled($param)) {

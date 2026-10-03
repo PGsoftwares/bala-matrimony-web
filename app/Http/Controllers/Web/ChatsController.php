@@ -73,6 +73,7 @@ class ChatsController extends Controller
                 ->leftJoin('settings', 'user_details.user_id', '=', 'settings.user_id')
                 ->where('users.id', $partnerId)
                 ->where('users.status', '=', 'active')
+                ->where('users.register_step', '>=', 7)
                 ->select(
                     'users.id as user_id', 'users.name',
                     'user_details.gender', 'user_details.profile_image',
@@ -365,8 +366,15 @@ class ChatsController extends Controller
             ->join('user_details', 'users.id', '=', 'user_details.user_id')
             ->leftJoin('settings', 'user_details.user_id', '=', 'settings.user_id')
             ->where('users.id', $chatUserId)
+            ->where('users.status', 'active')
+            ->where('users.register_step', '>=', 7)
             ->select('users.*', 'user_details.*', 'settings.profile_picture_visibility', 'settings.name_visibility')
             ->first();
+
+        if (!$chatUser) {
+            return redirect()->route('chats.index')->with('error', 'User not found or profile not active.');
+        }
+
         $chatUser->profile_image = ApiHelperController::ImageUrl($chatUser->profile_image ,$chatUser->profile_picture_visibility, null, $chatUser->gender);
         $chatUser->name = ApiHelperController::privacyData($chatUser->name ,$chatUser->name_visibility, null);
 
@@ -406,8 +414,14 @@ class ChatsController extends Controller
             ->join('user_details', 'users.id', '=', 'user_details.user_id')
             ->leftJoin('settings', 'user_details.user_id', '=', 'settings.user_id')
             ->where('users.id', $chatUserId)
+            ->where('users.status', 'active')
+            ->where('users.register_step', '>=', 7)
             ->select('users.*', 'user_details.*', 'settings.profile_picture_visibility', 'settings.name_visibility')
             ->first();
+
+        if (!$chatUser) {
+            return response()->json(['error' => 'User not found or profile not active.'], 404);
+        }
 
         $chatUser->profile_image = ApiHelperController::ImageUrl($chatUser->profile_image, $chatUser->profile_picture_visibility, $isValidPackage, $chatUser->gender);
         $chatUser->name = ApiHelperController::privacyData($chatUser->name, $chatUser->name_visibility, $isValidPackage);

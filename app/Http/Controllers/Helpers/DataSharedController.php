@@ -231,6 +231,7 @@ class DataSharedController extends Controller
             })
             ->leftJoin('receipts', 'latest_receipt_ids.latest_id', '=', 'receipts.id')
             ->where('users.status', '=', 'active')
+            ->where('users.register_step', '>=', 7)
             ->orderBy('user_details.created_at', 'desc')
             ->select(
                 'users.*',

@@ -51,7 +51,7 @@
                                                 <a href="{{ url('admin/users?status=deactivated') }}" class="text-danger fw-semibold">Inactive: {{ $totalInactive }}</a>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between">
-                                                <a href="{{ url('admin/users') }}" class="text-muted text-decoration-underline fw-medium fs-13">View all</a>
+                                                <a href="{{ url('admin/users?completed=1') }}" class="text-muted text-decoration-underline fw-medium fs-13">View all</a>
                                             </div>
                                         </div>
                                     </div>
@@ -80,7 +80,7 @@
                                                 <a href="{{ url('admin/users?gender=male&status=deactivated') }}" class="text-danger fw-semibold">Inactive: {{ $totalMaleInactive }}</a>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between">
-                                                <a href="{{ url('admin/users?gender=male') }}" class="text-muted text-decoration-underline fw-medium fs-13">View all</a>
+                                                <a href="{{ url('admin/users?gender=male&completed=1') }}" class="text-muted text-decoration-underline fw-medium fs-13">View all</a>
                                             </div>
                                         </div>
                                     </div>
@@ -109,7 +109,88 @@
                                                 <a href="{{ url('admin/users?gender=female&status=deactivated') }}" class="text-danger fw-semibold">Inactive: {{ $totalFemaleInactive }}</a>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between">
-                                                <a href="{{ url('admin/users?gender=female') }}" class="text-muted text-decoration-underline fw-medium fs-13">View all</a>
+                                                <a href="{{ url('admin/users?gender=female&completed=1') }}" class="text-muted text-decoration-underline fw-medium fs-13">View all</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="card custom-card main-card-item warning">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-start justify-content-between mb-2 flex-wrap">
+                                                <div> <span class="d-block mb-2 fw-medium">Partial Users</span>
+                                                    <h3 class="fw-semibold lh-1 mb-0">{{ $partialUsers }}</h3>
+                                                </div>
+                                                <div class="text-end">
+                                                    <div class="mb-2">
+                                                        <div class="mini-stat-icon avatar-sm rounded-circle">
+                                                            <span class="avatar-title rounded-circle bg-light text-warning">
+                                                                <i class='bx bxs-user-detail font-size-24'></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 font-size-12">
+                                                <span class="text-muted fw-semibold">Incomplete registration (step &lt; 7)</span>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <a href="{{ url('admin/users?status=incomplete') }}" class="text-muted text-decoration-underline fw-medium fs-13">View all</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="card custom-card main-card-item warning">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-start justify-content-between mb-2 flex-wrap">
+                                                <div> <span class="d-block mb-2 fw-medium">Partial Male</span>
+                                                    <h3 class="fw-semibold lh-1 mb-0">{{ $partialMale }}</h3>
+                                                </div>
+                                                <div class="text-end">
+                                                    <div class="mb-2">
+                                                        <div class="mini-stat-icon avatar-sm rounded-circle">
+                                                            <span class="avatar-title rounded-circle bg-light text-warning">
+                                                                <i class='bx bx-male font-size-24'></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 font-size-12">
+                                                <span class="text-muted fw-semibold">Incomplete male profiles</span>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <a href="{{ url('admin/users?gender=male&status=incomplete') }}" class="text-muted text-decoration-underline fw-medium fs-13">View all</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="card custom-card main-card-item warning">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-start justify-content-between mb-2 flex-wrap">
+                                                <div> <span class="d-block mb-2 fw-medium">Partial Female</span>
+                                                    <h3 class="fw-semibold lh-1 mb-0">{{ $partialFemale }}</h3>
+                                                </div>
+                                                <div class="text-end">
+                                                    <div class="mb-2">
+                                                        <div class="mini-stat-icon avatar-sm rounded-circle">
+                                                            <span class="avatar-title rounded-circle bg-light text-warning">
+                                                                <i class='bx bx-female font-size-24'></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 font-size-12">
+                                                <span class="text-muted fw-semibold">Incomplete female profiles</span>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <a href="{{ url('admin/users?gender=female&status=incomplete') }}" class="text-muted text-decoration-underline fw-medium fs-13">View all</a>
                                             </div>
                                         </div>
                                     </div>

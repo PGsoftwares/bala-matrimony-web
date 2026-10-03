@@ -38,8 +38,9 @@
                                 <div class="row g-3">
 
                                     <div class="col-md-6">
-                                        <label for="father_name" class="form-label">Father Name</label>
-                                        <input type="text" id="father_name" name="father_name" class="form-control rounded-pill shadow-none" placeholder="Enter Father Name" value="{{ old('father_name', $userAndUserDetails->father_name ?? '') }}">
+                                        <label for="father_name" class="form-label">Father Name <span class="text-danger">*</span></label>
+                                        <input type="text" id="father_name" name="father_name" class="form-control rounded-pill shadow-none @error('father_name') is-invalid @enderror" placeholder="Enter Father Name" value="{{ old('father_name', $userAndUserDetails->father_name ?? '') }}" required>
+                                        @error('father_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                     </div>
 
                                     <div class="col-md-6">
@@ -56,8 +57,9 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label for="mother_name" class="form-label">Mother Name</label>
-                                        <input type="text" id="mother_name" name="mother_name" class="form-control rounded-pill shadow-none" placeholder="Enter Mother Name" value="{{ old('mother_name', $userAndUserDetails->mother_name ?? '') }}">
+                                        <label for="mother_name" class="form-label">Mother Name <span class="text-danger">*</span></label>
+                                        <input type="text" id="mother_name" name="mother_name" class="form-control rounded-pill shadow-none @error('mother_name') is-invalid @enderror" placeholder="Enter Mother Name" value="{{ old('mother_name', $userAndUserDetails->mother_name ?? '') }}" required>
+                                        @error('mother_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                     </div>
 
                                     <div class="col-md-6">
@@ -247,11 +249,7 @@
                             </form>
                         </div>
 
-                        <div class="bg-white border-0 p-3 d-flex justify-content-between align-items-center shadow-top sticky-bottom">
-                            <form action="{{ route('logout') }}" method="POST" class="m-0">
-                                @csrf
-                                <button type="submit" class="btn button2 rounded-pill">Logout</button>
-                            </form>
+                        <div class="bg-white border-0 p-3 d-flex justify-content-end align-items-center shadow-top sticky-bottom">
                             <div class="d-flex gap-2">
 {{--                                <a href="{{ url('educationJob-details') }}" class="btn button1 rounded-pill">Back</a>--}}
                                 <button form="family-form" type="submit" class="btn button2 rounded-pill">Save & Next</button>

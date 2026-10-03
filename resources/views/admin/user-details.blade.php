@@ -81,9 +81,13 @@
                                                 <div class="col-6">
                                                     <p class="text-muted mb-0 font-size-12">Status</p>
                                                     <h6 class="font-size-13 mb-2">
-                                                        <span class="badge {{ ($userAndUserDetails->status ?? '') === 'active' ? 'bg-success' : (($userAndUserDetails->status ?? '') === 'pending' ? 'bg-warning' : 'bg-danger') }}">
-                                                            {{ ucfirst($userAndUserDetails->status ?? 'pending') }}
-                                                        </span>
+                                                        @if(($userAndUserDetails->register_step ?? ($user->register_step ?? null)) === null || ($userAndUserDetails->register_step ?? ($user->register_step ?? 0)) < 7)
+                                                            <span class="badge bg-warning">Pending / Incomplete</span>
+                                                        @else
+                                                            <span class="badge {{ ($userAndUserDetails->status ?? '') === 'active' ? 'bg-success' : (($userAndUserDetails->status ?? '') === 'pending' ? 'bg-warning' : 'bg-danger') }}">
+                                                                {{ ucfirst($userAndUserDetails->status ?? 'pending') }}
+                                                            </span>
+                                                        @endif
                                                     </h6>
                                                 </div>
                                                 <div class="col-6">
@@ -704,8 +708,8 @@
                                             <div class="row">
 
                                                 <div class="col-lg-6 mb-3">
-                                                    <label class="form-label">Father Name</label>
-                                                    <input type="text" class="form-control" name="father_name" placeholder="Enter Father Name" value="{{ old('father_name', $userAndUserDetails->father_name ?? '') }}">
+                                                    <label class="form-label">Father Name <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="father_name" placeholder="Enter Father Name" value="{{ old('father_name', $userAndUserDetails->father_name ?? '') }}" required>
                                                 </div>
 
                                                 <div class="col-lg-6 mb-3">
@@ -722,8 +726,8 @@
                                                 </div>
 
                                                 <div class="col-lg-6 mb-3">
-                                                    <label class="form-label">Mother Name</label>
-                                                    <input type="text" class="form-control" name="mother_name" placeholder="Enter Mother Name" value="{{ old('mother_name', $userAndUserDetails->mother_name ?? '') }}">
+                                                    <label class="form-label">Mother Name <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="mother_name" placeholder="Enter Mother Name" value="{{ old('mother_name', $userAndUserDetails->mother_name ?? '') }}" required>
                                                 </div>
 
                                                 <div class="col-lg-6 mb-3">

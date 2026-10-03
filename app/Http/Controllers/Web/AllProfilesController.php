@@ -98,6 +98,12 @@ class AllProfilesController extends Controller
         if (!$profile) {
             return redirect()->back()->with('error', 'User not found.');
         }
+
+        // Incomplete or non-active profile should not be shown to other users
+        if (!$isOwnProfile && ($profile->status !== 'active' || ($profile->register_step ?? 0) < 7)) {
+            return redirect()->back()->with('error', 'Profile is not available or incomplete.');
+        }
+
         $oppositeGender = DataController::getOppositeGender($profile->gender);
 
         $contactRequested = DB::table('contact_requests')
@@ -127,6 +133,8 @@ class AllProfilesController extends Controller
             ->where('city', $profile->city)
             ->where('users.id', '!=', $id)
             ->where('user_details.gender',  $oppositeGender)
+            ->where('users.status', 'active')
+            ->where('users.register_step', '>=', 7)
             ->select('users.*', 'user_details.*')
             ->take(5)->get();
 
@@ -340,6 +348,8 @@ class AllProfilesController extends Controller
         // Build the base query
         $profilesQuery = DB::table('user_details')
             ->join('users', 'user_details.user_id', '=', 'users.id')
+            ->where('users.status', 'active')
+            ->where('users.register_step', '>=', 7)
             ->orderBy('user_details.created_at', 'desc')
             ->select('user_details.*', 'users.*');
 

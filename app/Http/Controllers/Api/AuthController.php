@@ -422,7 +422,7 @@ class AuthController extends Controller
             ->latest()
             ->value('package') ?? 'No Package';
 
-        $isProfileComplete = ($user->register_step == 5);
+        $isProfileComplete = ($user->register_step >= 7);
 
         if (!$isProfileComplete) {
             return response()->json([
@@ -945,6 +945,19 @@ class AuthController extends Controller
     public function RegisterFamilyDetails(Request $request): JsonResponse
     {
         try {
+            $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+                'father_name' => 'required|string|max:255',
+                'mother_name' => 'required|string|max:255',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'failure',
+                    'message' => $validator->errors()->first(),
+                    'errors' => $validator->errors(),
+                ], 422);
+            }
+
             $user_id = $request->input('user_id');
             $propertyDetailsString = DataController::formatPropertyDetails($request->input('property_details'));
 
@@ -1379,8 +1392,8 @@ class AuthController extends Controller
 //            $user->save();
 //        }
 
-        // Check if register_step is complete (assumed 7 steps)
-        $isProfileComplete = ($user->register_step == 7);
+        // Check if register_step is complete (7 steps)
+        $isProfileComplete = ($user->register_step >= 7);
 
         if (!$isProfileComplete) {
             return response()->json([

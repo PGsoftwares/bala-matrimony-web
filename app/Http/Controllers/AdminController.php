@@ -21,20 +21,23 @@ class AdminController extends Controller
         // Total counts
         $totalUsers = DB::table('users')->where('role', '!=', 'admin')->count();
 
-        // Standard users
+        // Standard users (only fully completed profiles)
         $totalStandard = DB::table('users')
             ->join('user_details', 'users.id', '=', 'user_details.user_id')
-            ->where('role', '=', 'standard')
+            ->where('users.role', '=', 'standard')
+            ->where('users.register_step', '>=', 7)
             ->count();
         $totalStandardMale = DB::table('users')
             ->join('user_details', 'users.id', '=', 'user_details.user_id')
             ->where('users.role', '=', 'standard')
             ->where('user_details.gender', '=', 'Male')
+            ->where('users.register_step', '>=', 7)
             ->count();
         $totalStandardFemale = DB::table('users')
             ->join('user_details', 'users.id', '=', 'user_details.user_id')
             ->where('users.role', '=', 'standard')
             ->where('user_details.gender', '=', 'Female')
+            ->where('users.register_step', '>=', 7)
             ->count();
 
         // Professional users
@@ -112,62 +115,82 @@ class AdminController extends Controller
 //        $membershipDiamond = getMembershipCount('Existing');
 
 
-        // Total Standard status counts
+        // Total Standard status counts (only fully completed profiles)
         $totalActive = DB::table('users')
             ->join('user_details', 'users.id', '=', 'user_details.user_id')
             ->where('users.role', '=', 'standard')
+            ->where('users.register_step', '>=', 7)
             ->where('users.status', '=', 'active')
             ->count();
         $totalPending = DB::table('users')
             ->join('user_details', 'users.id', '=', 'user_details.user_id')
             ->where('users.role', '=', 'standard')
+            ->where('users.register_step', '>=', 7)
             ->where('users.status', '=', 'pending')
             ->count();
         $totalInactive = DB::table('users')
             ->join('user_details', 'users.id', '=', 'user_details.user_id')
             ->where('users.role', '=', 'standard')
+            ->where('users.register_step', '>=', 7)
             ->whereIn('users.status', ['deactivated', 'inactive'])
             ->count();
 
-        // Male Standard status counts
+        // Male Standard status counts (only fully completed profiles)
         $totalMaleActive = DB::table('users')
             ->join('user_details', 'users.id', '=', 'user_details.user_id')
             ->where('users.role', '=', 'standard')
             ->where('user_details.gender', '=', 'Male')
+            ->where('users.register_step', '>=', 7)
             ->where('users.status', '=', 'active')
             ->count();
         $totalMalePending = DB::table('users')
             ->join('user_details', 'users.id', '=', 'user_details.user_id')
             ->where('users.role', '=', 'standard')
             ->where('user_details.gender', '=', 'Male')
+            ->where('users.register_step', '>=', 7)
             ->where('users.status', '=', 'pending')
             ->count();
         $totalMaleInactive = DB::table('users')
             ->join('user_details', 'users.id', '=', 'user_details.user_id')
             ->where('users.role', '=', 'standard')
             ->where('user_details.gender', '=', 'Male')
+            ->where('users.register_step', '>=', 7)
             ->whereIn('users.status', ['deactivated', 'inactive'])
             ->count();
 
-        // Female Standard status counts
+        // Female Standard status counts (only fully completed profiles)
         $totalFemaleActive = DB::table('users')
             ->join('user_details', 'users.id', '=', 'user_details.user_id')
             ->where('users.role', '=', 'standard')
             ->where('user_details.gender', '=', 'Female')
+            ->where('users.register_step', '>=', 7)
             ->where('users.status', '=', 'active')
             ->count();
         $totalFemalePending = DB::table('users')
             ->join('user_details', 'users.id', '=', 'user_details.user_id')
             ->where('users.role', '=', 'standard')
             ->where('user_details.gender', '=', 'Female')
+            ->where('users.register_step', '>=', 7)
             ->where('users.status', '=', 'pending')
             ->count();
         $totalFemaleInactive = DB::table('users')
             ->join('user_details', 'users.id', '=', 'user_details.user_id')
             ->where('users.role', '=', 'standard')
             ->where('user_details.gender', '=', 'Female')
+            ->where('users.register_step', '>=', 7)
             ->whereIn('users.status', ['deactivated', 'inactive'])
             ->count();
+
+        // Partial / Incomplete users (register_step < 7 or null)
+        $partialQuery = DB::table('users')
+            ->leftJoin('user_details', 'users.id', '=', 'user_details.user_id')
+            ->where('users.role', '!=', 'admin')
+            ->where(function($q) {
+                $q->whereNull('users.register_step')->orWhere('users.register_step', '<', 7);
+            });
+        $partialUsers = (clone $partialQuery)->count();
+        $partialMale = (clone $partialQuery)->whereRaw('LOWER(user_details.gender) = ?', ['male'])->count();
+        $partialFemale = (clone $partialQuery)->whereRaw('LOWER(user_details.gender) = ?', ['female'])->count();
 
         $couponCounts = DB::table('user_details')->whereNotNull('coupon_code')->groupBy('coupon_code')->count();
 
@@ -180,6 +203,7 @@ class AdminController extends Controller
             'totalActive', 'totalPending', 'totalInactive',
             'totalMaleActive', 'totalMalePending', 'totalMaleInactive',
             'totalFemaleActive', 'totalFemalePending', 'totalFemaleInactive',
+            'partialUsers', 'partialMale', 'partialFemale',
             'membershipFree', 'packages', 'membershipCounts', 'couponCounts'
         ));
     }

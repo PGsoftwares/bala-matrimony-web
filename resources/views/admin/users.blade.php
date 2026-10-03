@@ -18,7 +18,9 @@
                                 <div class="card-body border-bottom">
                                     <div class="d-flex align-items-center">
                                         <h5 class="mb-0 card-title flex-grow-1">
-                                            @if(request('gender') == 'male')
+                                            @if(request('status') == 'incomplete')
+                                                Partial / Incomplete Users
+                                            @elseif(request('gender') == 'male')
                                                 Male Users
                                             @elseif(request('gender') == 'female')
                                                 Female Users
@@ -136,7 +138,9 @@
                                                                 <span class="badge badge-soft-info p-2">ID : {{$profile->user_id}}</span>
                                                             </a>
                                                             <a>
-                                                                @if($profile->status === 'active')
+                                                                @if(($profile->register_step ?? null) === null || $profile->register_step < 7)
+                                                                    <span class="badge badge-soft-warning p-2">Pending / Incomplete</span>
+                                                                @elseif($profile->status === 'active')
                                                                     <span class="badge badge-soft-success p-2">Approved</span>
                                                                 @elseif($profile->status === 'deactivated')
                                                                     <span class="badge badge-soft-danger p-2">Rejected</span>
@@ -202,7 +206,7 @@
                                     <!-- Modal Footer -->
                                     <div class="modal-footer">
                                         <!-- Delete Form -->
-                                        <form method="POST" action="{{ route('user-list.destroy', $profile->user_id) }}">
+                                        <form method="POST" action="{{ route('user-list.destroy', $profile->user_id ?? $profile->id) }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger">Delete</button>
